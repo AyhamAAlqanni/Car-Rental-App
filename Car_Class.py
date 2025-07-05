@@ -49,6 +49,10 @@ class Car:
 
         return self.__comprehensive_insurance_cost
     
+    def decrease_available_quantity(self):
+
+        self.__quantity_available -= 1
+    
     def __str__(self):
 
         return (f"Car Name: {self.__name}\nAvailable Quantity: {self.__quantity_available}\n"
