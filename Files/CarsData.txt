@@ -1,0 +1,5 @@
+Car Name:Camry
+Available Quantity:6
+Daily Rent Cost:100.0
+Liability Insurance Cost:60.0
+Comprehensive Insurance Cost:90.0
