@@ -3,16 +3,16 @@
 from Car_Class import Car
 
 # A function that writes car's information to the file.
-def file_write(added_car):
+def file_write(car_object):
 
-    write_to_file = open("Files/CarsData.txt", "a")
+    write_to_file = open("Files/CarsData.txt", "w")
 
-    #write_to_file.write(str(added_car) + "\n")
-    write_to_file.write("Car Name:" + str(added_car.get_name()) + "\n")
-    write_to_file.write("Available Quantity:" + str(added_car.get_quantity_available()) + "\n")
-    write_to_file.write("Daily Rent Cost:" + str(added_car.get_daily_rent_cost()) + "\n")
-    write_to_file.write("Liability Insurance Cost:" + str(added_car.get_liability_insurance_cost()) + "\n")
-    write_to_file.write("Comprehensive Insurance Cost:" + str(added_car.get_comprehensive_insurance_cost()) + "\n")
+    # Writing car object information to the file.
+    write_to_file.write("Car Name:" + str(car_object.get_name()) + "\n")
+    write_to_file.write("Available Quantity:" + str(car_object.get_quantity_available()) + "\n")
+    write_to_file.write("Daily Rent Cost:" + str(car_object.get_daily_rent_cost()) + "\n")
+    write_to_file.write("Liability Insurance Cost:" + str(car_object.get_liability_insurance_cost()) + "\n")
+    write_to_file.write("Comprehensive Insurance Cost:" + str(car_object.get_comprehensive_insurance_cost()) + "\n")
 
     write_to_file.close()
 
@@ -24,40 +24,51 @@ def file_read():
 
     read_from_file = open("Files/CarsData.txt", "r")
 
+    # Reading first line (Car Name).
     car_name = read_from_file.readline()
 
+    # Stop reading when the empty line is reached.
     while car_name != "":
 
         car_name = car_name.rstrip("\n").split(":")
         car_name = car_name[1]
 
+        # Reading second line (Car Available Quantity).
         car_quantity = read_from_file.readline().rstrip("\n").split(":")
         car_quantity = car_quantity[1]
 
+        # Reading third line (Car Daily Cost).
         car_daily_cost = read_from_file.readline().rstrip("\n").split(":")
         car_daily_cost = car_daily_cost[1]
 
+        # Reading fourth line (Car Liability Insurance Cost).
         car_liability_insurance_cost = read_from_file.readline().rstrip("\n").split(":")
         car_liability_insurance_cost = car_liability_insurance_cost[1]
 
+        # Reading fifth line (Car Comprehensive Insurance Cost).
         car_comprehensive_insurance_cost = read_from_file.readline().rstrip("\n").split(":")
         car_comprehensive_insurance_cost = car_comprehensive_insurance_cost[1]
 
+        # Creating a car object from the information collected from the file.
         car_object = Car(car_name, int(car_quantity), float(car_daily_cost), float(car_liability_insurance_cost), 
                          float(car_comprehensive_insurance_cost))
         
+        # Adding car object to the list.
         cars_list.append(car_object)
 
         car_name = read_from_file.readline()
 
     read_from_file.close()
 
+    # Returning car list.
     return cars_list
 
 
 # A function that displays the menu.
 def menu_display():
 
+    # only 1, 2, 3, 4, 5 and 0 are accepted. If the users enters anything else, 
+    # the system keeps asking the user to enter a valid option
     try:
 
         print("Please Select One:")
@@ -79,7 +90,7 @@ def menu_display():
         return -1
 
 
-# A function that adds a car
+# A function that creates a car object and returns it.
 def add_car():
 
     try:
@@ -90,6 +101,7 @@ def add_car():
         liability_cost = float(input("Enter Liability Insurance Cost: "))
         comprehensive_cost = float(input("Enter Comprehensive Insurance Cost: "))
 
+        # Creating a car object from the information collected from the user.
         car_object = Car(car_name, available_quantity, daily_rent_cost, liability_cost, comprehensive_cost)
 
         return car_object
@@ -99,7 +111,7 @@ def add_car():
         print("Wrong Input!\nCar Was Not Added.")
 
 
-# A function that deals with car renting processes.
+# A function that deals with car renting process.
 def car_rent(cars_list):
 
     print("Select One of The Available Cars:")
@@ -107,10 +119,10 @@ def car_rent(cars_list):
     print("Model", "\t\tAvailable", "\tPrice/Day", "\tLiability Insurance/Day", "\tComprehensive Insurance/Day")
     print("-------------------------------------------------------------------------------------------------------")
 
-    #print(f"1. Camry\t----3\t\t--$120\t\t\t$90\t\t\t\t$60")
-
+    # A variable that holds car listing number for the car list menu.
     car_number = 1
 
+    # Displaying cars information.
     for car in cars_list:
 
         print(f"{car_number}. {car.get_name()}\t    {car.get_quantity_available()}\t\t  ${car.get_daily_rent_cost()}" + 
@@ -118,79 +130,116 @@ def car_rent(cars_list):
         
         car_number += 1
 
-    car_selection = int(input("Enter Car Number Selection: "))
+    # Making Sure that the user selection is between 1 and cars list length plus it is an integer.
+    try:
 
-    if car_selection > 0 and car_selection <= len(cars_list):
+        car_selection = int(input("Enter Car Number Selection: "))
 
-        rented_days = int(input("Enter How Many Days to Be Rented: "))
-        insurance_type = input("Enter (L) For Liability Insurance, (C) For Comprehensive Insurance: ")
+        if car_selection > 0 and car_selection <= len(cars_list):
 
-        renting_cost = cars_list[car_selection - 1].get_daily_rent_cost() * rented_days
-        tax_cost = renting_cost * 0.05
-        total_cost = renting_cost + tax_cost
+            rented_days = int(input("Enter How Many Days to Be Rented: "))
+            insurance_type = input("Enter (L) For Liability Insurance, (C) For Comprehensive Insurance: ")
 
-        print(f"Renting Cost: ${format(renting_cost, "0.2f")}")
-        print(f"Tax (5%): ${format(tax_cost, "0.2f")}")
+            renting_cost = cars_list[car_selection - 1].get_daily_rent_cost() * rented_days
+            tax_cost = renting_cost * 0.05
+            total_cost = renting_cost + tax_cost
 
-        if insurance_type.upper() == "L":
+            if insurance_type.upper() == "L":
 
-            print(f"Insurance Type: Liability.\tCost: ${format(cars_list[car_selection - 1].get_liability_insurance_cost(), "0.2f")}")
+                print(f"Insurance Type: Liability.\tCost: ${format(cars_list[car_selection - 1].get_liability_insurance_cost(), "0.2f")}")
 
-            insurance_cost = cars_list[car_selection - 1].get_liability_insurance_cost()
+                insurance_cost = cars_list[car_selection - 1].get_liability_insurance_cost()
 
-        elif insurance_type.upper() == "C":
+            elif insurance_type.upper() == "C":
 
-            print(f"Insurance Type: Comprehensive.\tCost: ${format(cars_list[car_selection - 1].get_comprehensive_insurance_cost(), "0.2f")}")
+                print(f"Insurance Type: Comprehensive.\tCost: ${format(cars_list[car_selection - 1].get_comprehensive_insurance_cost(), "0.2f")}")
 
-            insurance_cost = cars_list[car_selection - 1].get_comprehensive_insurance_cost()
+                insurance_cost = cars_list[car_selection - 1].get_comprehensive_insurance_cost()
 
-        total_cost += insurance_cost
+            else:
 
-        print(f"Total: ${format(total_cost, "0.2f")}")
+                print("Invalid Input!\nOnly The Letters “L”, “l”, “F”, and “f” Are Accepted.")
 
-        renting_confirmation = input("Confirm Renting (Y) or (N): ")
+                # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
+                return 0, 0, 0
+            
+            print(f"Renting Cost: ${format(renting_cost, "0.2f")}")
+            print(f"Tax (5%): ${format(tax_cost, "0.2f")}")
 
-        if renting_confirmation.upper() == "Y":
+            total_cost += insurance_cost
 
-            cars_list[car_selection - 1].decrease_available_quantity()
+            print(f"Total: ${format(total_cost, "0.2f")}")
 
-            print("Car Was Added To The Total Menu Option.")
+            renting_confirmation = input("Confirm Renting (Y) or (N): ")
 
-            return total_cost, insurance_cost, tax_cost 
-        
+            if renting_confirmation.upper() == "Y":
+
+                cars_list[car_selection - 1].decrease_available_quantity()
+
+                print("Car Was Added To The Total Menu Option.")
+
+                return total_cost, insurance_cost, tax_cost 
+            
+            else:
+
+                print("Car Was Not Rented.")
+
+                # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
+                return 0, 0, 0
+
         else:
+                print("Invalid Selection!\nEntered a Value Not in The List.")
 
-            print("Car Was Not Rented.")
+                # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
+                return 0, 0, 0
+
+    except ValueError:
+
+        print("Wrong Input!\nEntered a Non Integer Value.")
+
+        # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
+        return 0, 0, 0
 
 
-# A function that deals with car returing processes.
+# A function that deals with car returing process.
 def car_return(cars_list):
 
+    # A variable that holds car listing number for the car list menu.
     car_number = 1
 
+    # Displaying cars in the list.
     for car in cars_list:
 
         print(f"{car_number}. {car.get_name()}")
         
         car_number += 1
 
-    car_selection = int(input("Select Car Number to Be Returned: "))
+    try:
 
-    if car_selection > 0 and car_selection <= len(cars_list):
+        car_selection = int(input("Select Car Number to Be Returned: "))
 
-        print(f"You Selected {cars_list[car_selection - 1].get_name()}.")
+        if car_selection > 0 and car_selection <= len(cars_list):
 
-        returning_confirmation = input("Confirm Returning (Y) or (N): ")
+            print(f"You Selected {cars_list[car_selection - 1].get_name()}.")
 
-        if returning_confirmation.upper() == "Y":
+            returning_confirmation = input("Confirm Returning (Y) or (N): ")
 
-            cars_list[car_selection - 1].increase_available_quantity()
+            if returning_confirmation.upper() == "Y":
 
-            print("Car Returned.")
+                cars_list[car_selection - 1].increase_available_quantity()
+
+                print("Car Returned.")
+
+            else:
+
+                print("Car Was Not Returned.")
 
         else:
+                print("Invalid Selection!\nEntered a Value Not in The List.")
 
-            print("Car Was Not Returned.")
+    except ValueError:
+
+        print("Wrong Input!\nEntered a Non Integer Value.")
 
 
 # A function that deals with printing renting total.
@@ -206,44 +255,60 @@ def car_delete(cars_list):
 
     print("Select One of The Available Cars:")
 
+    # A variable that holds car listing number for the car list menu.
     car_number = 1
 
+    # Displaying cars in the list.
     for car in cars_list:
 
         print(f"{car_number}. {car.get_name()}")
         
         car_number += 1
 
-    car_selection = int(input("Select Car Number to Be Returned: "))
+    try:
 
-    if car_selection > 0 and car_selection <= len(cars_list):
+        car_selection = int(input("Select Car Number to Be Returned: "))
 
-        deleting_confirmation = input("Confirm Deleting (Y) or (N): ")
+        if car_selection > 0 and car_selection <= len(cars_list):
 
-        if deleting_confirmation.upper() == "Y":
+            deleting_confirmation = input("Confirm Deleting (Y) or (N): ")
 
-            del cars_list[car_selection - 1]
+            if deleting_confirmation.upper() == "Y":
 
-            print("Car Was Deleted.")
+                del cars_list[car_selection - 1]
+
+                print("Car Was Deleted.")
+
+            else:
+
+                print("Car Was Not Deleted.")
 
         else:
+                print("Invalid Selection!\nEntered a Value Not in The List.")
 
-            print("Car Was Not Deleted.")
+    except ValueError:
+
+        print("Wrong Input!\nEntered a Non Integer Value.")
 
 
 # Main Function
 def main():
 
+    # Reading file content to the list.
     cars_list = file_read()
 
+    # Getting user option input.
     user_input = menu_display()
 
+    # Variables to hold costs information for displaying.
     total_cost = 0
     insurance_cost = 0
     tax_cost = 0
 
     while user_input != 0:
 
+        # only 1, 2, 3, 4, 5 and 0 are accepted. If the users enters anything else, 
+        # the system keeps asking the user to enter a valid option.
         if user_input < 0 or user_input > 5:
 
             print("Invalid Option!")
@@ -257,11 +322,10 @@ def main():
 
                 cars_list.append(new_car)
 
-                file_write(new_car)
-
         elif user_input == 2:
 
             car_total_cost, car_insurance_cost, car_tax_cost = car_rent(cars_list)
+            # Updating costs information.
             total_cost += car_total_cost
             insurance_cost += car_insurance_cost
             tax_cost += car_tax_cost
@@ -278,7 +342,21 @@ def main():
 
             car_delete(cars_list)
 
+        # Getting user option input.
+        # Keep asking the user for input until user inputs 0 (to exit).
         user_input = menu_display()
+
+    # Exited the loop (the program).
+    print("Exited Program.")
+
+    print("Saving Changes To File......")
+
+    # Writing list contents to the file.
+    for car in cars_list:
+
+        file_write(car)
+
+    print("Done Writing to File.")
 
 
 # Calling Main Function
