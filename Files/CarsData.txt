@@ -3,8 +3,13 @@ Available Quantity:3
 Daily Rent Cost:90.0
 Liability Insurance Cost:20.0
 Comprehensive Insurance Cost:50.0
+Car Name:Land cruiser
+Available Quantity:2
+Daily Rent Cost:150.0
+Liability Insurance Cost:30.0
+Comprehensive Insurance Cost:70.0
 Car Name:Altima
-Available Quantity:1
+Available Quantity:2
 Daily Rent Cost:70.0
 Liability Insurance Cost:20.0
 Comprehensive Insurance Cost:50.0

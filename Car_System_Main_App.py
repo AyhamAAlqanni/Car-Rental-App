@@ -119,7 +119,7 @@ def car_rent(cars_list):
 
     print("Select One of The Available Cars:")
     print("-------------------------------------------------------------------------------------------------------")
-    print("Model", "\t\tAvailable", "\tPrice/Day", "\tLiability Insurance/Day", "\tComprehensive Insurance/Day")
+    print(f"{"Model":<20}{"Available":<15}{"Price/Day":<15}{"Liability Insurance/Day":<25}{"Comprehensive Insurance/Day"}")
     print("-------------------------------------------------------------------------------------------------------")
 
     # A variable that holds car listing number for the car list menu.
@@ -128,8 +128,8 @@ def car_rent(cars_list):
     # Displaying cars information.
     for car in cars_list:
 
-        print(f"{car_number}. {car.get_name()}\t    {car.get_quantity_available()}\t\t  ${car.get_daily_rent_cost()}" + 
-              f"\t\t${car.get_liability_insurance_cost()}\t\t\t${car.get_comprehensive_insurance_cost()}")
+        print(f"{car_number}. {car.get_name():<20}{car.get_quantity_available():<14}{"$" + str(car.get_daily_rent_cost()):<20}" + 
+              f"{"$" + str(car.get_liability_insurance_cost()):<27}{"$" + str(car.get_comprehensive_insurance_cost())}")
         
         car_number += 1
 
@@ -140,52 +140,61 @@ def car_rent(cars_list):
 
         if car_selection > 0 and car_selection <= len(cars_list):
 
-            rented_days = int(input("Enter How Many Days to Be Rented: "))
-            insurance_type = input("Enter (L) For Liability Insurance, (C) For Comprehensive Insurance: ")
+            if cars_list[car_selection - 1].get_quantity_available() > 0:
 
-            renting_cost = cars_list[car_selection - 1].get_daily_rent_cost() * rented_days
-            tax_cost = renting_cost * 0.05
-            total_cost = renting_cost + tax_cost
+                rented_days = int(input("Enter How Many Days to Be Rented: "))
+                insurance_type = input("Enter (L) For Liability Insurance, (C) For Comprehensive Insurance: ")
 
-            if insurance_type.upper() == "L":
+                renting_cost = cars_list[car_selection - 1].get_daily_rent_cost() * rented_days
+                tax_cost = renting_cost * 0.05
+                total_cost = renting_cost + tax_cost
 
-                print(f"Insurance Type: Liability.\tCost: ${format(cars_list[car_selection - 1].get_liability_insurance_cost(), "0.2f")}")
+                if insurance_type.upper() == "L":
 
-                insurance_cost = cars_list[car_selection - 1].get_liability_insurance_cost()
+                    print(f"Insurance Type: Liability.\tCost: ${format(cars_list[car_selection - 1].get_liability_insurance_cost(), "0.2f")}")
 
-            elif insurance_type.upper() == "C":
+                    insurance_cost = cars_list[car_selection - 1].get_liability_insurance_cost()
 
-                print(f"Insurance Type: Comprehensive.\tCost: ${format(cars_list[car_selection - 1].get_comprehensive_insurance_cost(), "0.2f")}")
+                elif insurance_type.upper() == "C":
 
-                insurance_cost = cars_list[car_selection - 1].get_comprehensive_insurance_cost()
+                    print(f"Insurance Type: Comprehensive.\tCost: ${format(cars_list[car_selection - 1].get_comprehensive_insurance_cost(), "0.2f")}")
 
+                    insurance_cost = cars_list[car_selection - 1].get_comprehensive_insurance_cost()
+
+                else:
+
+                    print("RESULT: Invalid Input!\nOnly The Letters “L”, “l”, “F”, and “f” Are Accepted.")
+
+                    # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
+                    return 0, 0, 0
+                
+                print(f"Renting Cost: ${format(renting_cost, "0.2f")}")
+                print(f"Tax (5%): ${format(tax_cost, "0.2f")}")
+
+                total_cost += insurance_cost
+
+                print(f"Total: ${format(total_cost, "0.2f")}")
+
+                renting_confirmation = input("Confirm Renting (Y) or (N): ")
+
+                if renting_confirmation.upper() == "Y":
+
+                    cars_list[car_selection - 1].decrease_available_quantity()
+
+                    print("RESULT: Car Was Added To The Total Menu Option.")
+
+                    return total_cost, insurance_cost, tax_cost 
+                
+                else:
+
+                    print("RESULT: Car Has Not Been Rented.")
+
+                    # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
+                    return 0, 0, 0
+                
             else:
 
-                print("RESULT: Invalid Input!\nOnly The Letters “L”, “l”, “F”, and “f” Are Accepted.")
-
-                # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
-                return 0, 0, 0
-            
-            print(f"Renting Cost: ${format(renting_cost, "0.2f")}")
-            print(f"Tax (5%): ${format(tax_cost, "0.2f")}")
-
-            total_cost += insurance_cost
-
-            print(f"Total: ${format(total_cost, "0.2f")}")
-
-            renting_confirmation = input("Confirm Renting (Y) or (N): ")
-
-            if renting_confirmation.upper() == "Y":
-
-                cars_list[car_selection - 1].decrease_available_quantity()
-
-                print("RESULT: Car Was Added To The Total Menu Option.")
-
-                return total_cost, insurance_cost, tax_cost 
-            
-            else:
-
-                print("RESULT: Car Has Not Been Rented.")
+                print("RESULT: This Type of Cars is Not Available Now.")
 
                 # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
                 return 0, 0, 0
@@ -297,6 +306,8 @@ def car_delete(cars_list):
 # Main Function
 def main():
 
+    print("*** Welcome to Car Rental Company System ***")
+
     # Reading file content to the list.
     cars_list = file_read()
 
@@ -373,8 +384,6 @@ def main():
     print("Saving Changes To File......")
 
     # Writing list contents to the file.
-    #for car in cars_list:
-
     file_write(cars_list)
 
     print("Done Writing to File.")
