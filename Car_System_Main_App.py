@@ -201,6 +201,36 @@ def display_total(total_cost, insurance_cost, tax_cost):
     print(f"Total Tax: ${format(tax_cost, "0.2f")}")
 
 
+# A function that deals with deleting a car.
+def car_delete(cars_list):
+
+    print("Select One of The Available Cars:")
+
+    car_number = 1
+
+    for car in cars_list:
+
+        print(f"{car_number}. {car.get_name()}")
+        
+        car_number += 1
+
+    car_selection = int(input("Select Car Number to Be Returned: "))
+
+    if car_selection > 0 and car_selection <= len(cars_list):
+
+        deleting_confirmation = input("Confirm Deleting (Y) or (N): ")
+
+        if deleting_confirmation.upper() == "Y":
+
+            del cars_list[car_selection - 1]
+
+            print("Car Was Deleted.")
+
+        else:
+
+            print("Car Was Not Deleted.")
+
+
 # Main Function
 def main():
 
@@ -243,6 +273,10 @@ def main():
         elif user_input == 4:
 
             display_total(total_cost, insurance_cost, tax_cost)
+
+        elif user_input == 5:
+
+            car_delete(cars_list)
 
         user_input = menu_display()
 
