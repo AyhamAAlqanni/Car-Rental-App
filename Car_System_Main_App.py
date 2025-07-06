@@ -3,16 +3,18 @@
 from Car_Class import Car
 
 # A function that writes car's information to the file.
-def file_write(car_object):
+def file_write(cars_list):
 
     write_to_file = open("Files/CarsData.txt", "w")
 
-    # Writing car object information to the file.
-    write_to_file.write("Car Name:" + str(car_object.get_name()) + "\n")
-    write_to_file.write("Available Quantity:" + str(car_object.get_quantity_available()) + "\n")
-    write_to_file.write("Daily Rent Cost:" + str(car_object.get_daily_rent_cost()) + "\n")
-    write_to_file.write("Liability Insurance Cost:" + str(car_object.get_liability_insurance_cost()) + "\n")
-    write_to_file.write("Comprehensive Insurance Cost:" + str(car_object.get_comprehensive_insurance_cost()) + "\n")
+    for car_object in cars_list:
+
+        # Writing car object information to the file.
+        write_to_file.write("Car Name:" + str(car_object.get_name()) + "\n")
+        write_to_file.write("Available Quantity:" + str(car_object.get_quantity_available()) + "\n")
+        write_to_file.write("Daily Rent Cost:" + str(car_object.get_daily_rent_cost()) + "\n")
+        write_to_file.write("Liability Insurance Cost:" + str(car_object.get_liability_insurance_cost()) + "\n")
+        write_to_file.write("Comprehensive Insurance Cost:" + str(car_object.get_comprehensive_insurance_cost()) + "\n")
 
     write_to_file.close()
 
@@ -86,6 +88,7 @@ def menu_display():
     except ValueError:
 
         print("Invalid Input!")
+        print("***************************************************************")
 
         return -1
 
@@ -102,13 +105,13 @@ def add_car():
         comprehensive_cost = float(input("Enter Comprehensive Insurance Cost: "))
 
         # Creating a car object from the information collected from the user.
-        car_object = Car(car_name, available_quantity, daily_rent_cost, liability_cost, comprehensive_cost)
+        car_object = Car(car_name.capitalize(), available_quantity, daily_rent_cost, liability_cost, comprehensive_cost)
 
         return car_object
     
     except ValueError:
 
-        print("Wrong Input!\nCar Was Not Added.")
+        print("RESULT: Wrong Input!\nCar Has Not Been Added.")
 
 
 # A function that deals with car renting process.
@@ -158,7 +161,7 @@ def car_rent(cars_list):
 
             else:
 
-                print("Invalid Input!\nOnly The Letters “L”, “l”, “F”, and “f” Are Accepted.")
+                print("RESULT: Invalid Input!\nOnly The Letters “L”, “l”, “F”, and “f” Are Accepted.")
 
                 # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
                 return 0, 0, 0
@@ -176,26 +179,26 @@ def car_rent(cars_list):
 
                 cars_list[car_selection - 1].decrease_available_quantity()
 
-                print("Car Was Added To The Total Menu Option.")
+                print("RESULT: Car Was Added To The Total Menu Option.")
 
                 return total_cost, insurance_cost, tax_cost 
             
             else:
 
-                print("Car Was Not Rented.")
+                print("RESULT: Car Has Not Been Rented.")
 
                 # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
                 return 0, 0, 0
 
         else:
-                print("Invalid Selection!\nEntered a Value Not in The List.")
+                print("RESULT: Invalid Selection!\nEntered a Value Not in The List.")
 
                 # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
                 return 0, 0, 0
 
     except ValueError:
 
-        print("Wrong Input!\nEntered a Non Integer Value.")
+        print("RESULT: Wrong Input!\nEntered a Non Integer Value.")
 
         # Returning 0 for total_cost, insurance_cost, tax_cost as a invalid input.
         return 0, 0, 0
@@ -228,18 +231,18 @@ def car_return(cars_list):
 
                 cars_list[car_selection - 1].increase_available_quantity()
 
-                print("Car Returned.")
+                print("RESULT: Car Has Been Returned.")
 
             else:
 
-                print("Car Was Not Returned.")
+                print("RESULT: Car Has Not Been Returned.")
 
         else:
-                print("Invalid Selection!\nEntered a Value Not in The List.")
+                print("RESULT: Invalid Selection!\nEntered a Value Not in The List.")
 
     except ValueError:
 
-        print("Wrong Input!\nEntered a Non Integer Value.")
+        print("RESULT: Wrong Input!\nEntered a Non Integer Value.")
 
 
 # A function that deals with printing renting total.
@@ -277,18 +280,18 @@ def car_delete(cars_list):
 
                 del cars_list[car_selection - 1]
 
-                print("Car Was Deleted.")
+                print("RESULT: Car Has Been Deleted.")
 
             else:
 
-                print("Car Was Not Deleted.")
+                print("RESULT: Car Has Not Been Deleted!")
 
         else:
-                print("Invalid Selection!\nEntered a Value Not in The List.")
+                print("RESULT: Invalid Selection!\nEntered a Value Not in The List.")
 
     except ValueError:
 
-        print("Wrong Input!\nEntered a Non Integer Value.")
+        print("RESULT: Wrong Input!\nEntered a Non Integer Value.")
 
 
 # Main Function
@@ -311,18 +314,25 @@ def main():
         # the system keeps asking the user to enter a valid option.
         if user_input < 0 or user_input > 5:
 
-            print("Invalid Option!")
+            print("RESULT: Invalid Option!")
+            print("***************************************************************")
             user_input = menu_display()
 
         if user_input == 1:
 
+            print("***************************************************************")
+            print("OPTION 1: Adding Car Information")
             new_car = add_car()
 
             if new_car != None:
 
                 cars_list.append(new_car)
+                print("RESULT: Car Has Been Added.")
 
         elif user_input == 2:
+
+            print("***************************************************************")
+            print("OPTION 2: Car Renting")
 
             car_total_cost, car_insurance_cost, car_tax_cost = car_rent(cars_list)
             # Updating costs information.
@@ -332,29 +342,40 @@ def main():
 
         elif user_input == 3:
 
+            print("***************************************************************")
+            print("OPTION 3: Car Returning")
+
             car_return(cars_list)
 
         elif user_input == 4:
+
+            print("***************************************************************")
+            print("OPTION 4: Displaying Total")
 
             display_total(total_cost, insurance_cost, tax_cost)
 
         elif user_input == 5:
 
+            print("***************************************************************")
+            print("OPTION 5: Deleting Car")
+
             car_delete(cars_list)
 
         # Getting user option input.
         # Keep asking the user for input until user inputs 0 (to exit).
+        print("***************************************************************")
         user_input = menu_display()
 
     # Exited the loop (the program).
-    print("Exited Program.")
+    print("***************************************************************")
+    print("OPTION 0: Exited Program.")
 
     print("Saving Changes To File......")
 
     # Writing list contents to the file.
-    for car in cars_list:
+    #for car in cars_list:
 
-        file_write(car)
+    file_write(cars_list)
 
     print("Done Writing to File.")
 
