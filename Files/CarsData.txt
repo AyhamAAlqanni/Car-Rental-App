@@ -1,5 +1,10 @@
+Car Name:Camry
+Available Quantity:3
+Daily Rent Cost:90.0
+Liability Insurance Cost:20.0
+Comprehensive Insurance Cost:50.0
 Car Name:Altima
-Available Quantity:2
+Available Quantity:1
 Daily Rent Cost:70.0
 Liability Insurance Cost:20.0
 Comprehensive Insurance Cost:50.0
