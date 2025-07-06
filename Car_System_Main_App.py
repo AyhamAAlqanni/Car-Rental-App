@@ -136,13 +136,15 @@ def car_rent(cars_list):
 
             print(f"Insurance Type: Liability.\tCost: ${format(cars_list[car_selection - 1].get_liability_insurance_cost(), "0.2f")}")
 
-            total_cost += cars_list[car_selection - 1].get_liability_insurance_cost()
+            insurance_cost = cars_list[car_selection - 1].get_liability_insurance_cost()
 
         elif insurance_type.upper() == "C":
 
             print(f"Insurance Type: Comprehensive.\tCost: ${format(cars_list[car_selection - 1].get_comprehensive_insurance_cost(), "0.2f")}")
 
-            total_cost += cars_list[car_selection - 1].get_comprehensive_insurance_cost()
+            insurance_cost = cars_list[car_selection - 1].get_comprehensive_insurance_cost()
+
+        total_cost += insurance_cost
 
         print(f"Total: ${format(total_cost, "0.2f")}")
 
@@ -151,6 +153,14 @@ def car_rent(cars_list):
         if renting_confirmation.upper() == "Y":
 
             cars_list[car_selection - 1].decrease_available_quantity()
+
+            print("Car Was Added To The Total Menu Option.")
+
+            return total_cost, insurance_cost, tax_cost 
+        
+        else:
+
+            print("Car Was Not Rented.")
 
 
 # A function that deals with car returing processes.
@@ -183,12 +193,24 @@ def car_return(cars_list):
             print("Car Was Not Returned.")
 
 
+# A function that deals with printing renting total.
+def display_total(total_cost, insurance_cost, tax_cost):
+
+    print(f"Total Cost: ${format(total_cost, "0.2f")}")
+    print(f"Total Insurance: ${format(insurance_cost, "0.2f")}")
+    print(f"Total Tax: ${format(tax_cost, "0.2f")}")
+
+
 # Main Function
 def main():
 
     cars_list = file_read()
 
     user_input = menu_display()
+
+    total_cost = 0
+    insurance_cost = 0
+    tax_cost = 0
 
     while user_input != 0:
 
@@ -209,11 +231,18 @@ def main():
 
         elif user_input == 2:
 
-            car_rent(cars_list)
+            car_total_cost, car_insurance_cost, car_tax_cost = car_rent(cars_list)
+            total_cost += car_total_cost
+            insurance_cost += car_insurance_cost
+            tax_cost += car_tax_cost
 
         elif user_input == 3:
 
             car_return(cars_list)
+
+        elif user_input == 4:
+
+            display_total(total_cost, insurance_cost, tax_cost)
 
         user_input = menu_display()
 
