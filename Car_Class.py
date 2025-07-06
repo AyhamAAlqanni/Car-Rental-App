@@ -52,6 +52,10 @@ class Car:
     def decrease_available_quantity(self):
 
         self.__quantity_available -= 1
+
+    def increase_available_quantity(self):
+
+        self.__quantity_available += 1
     
     def __str__(self):
 

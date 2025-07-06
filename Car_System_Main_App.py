@@ -120,7 +120,7 @@ def car_rent(cars_list):
 
     car_selection = int(input("Enter Car Number Selection: "))
 
-    if car_selection <= len(cars_list):
+    if car_selection > 0 and car_selection <= len(cars_list):
 
         rented_days = int(input("Enter How Many Days to Be Rented: "))
         insurance_type = input("Enter (L) For Liability Insurance, (C) For Comprehensive Insurance: ")
@@ -153,6 +153,36 @@ def car_rent(cars_list):
             cars_list[car_selection - 1].decrease_available_quantity()
 
 
+# A function that deals with car returing processes.
+def car_return(cars_list):
+
+    car_number = 1
+
+    for car in cars_list:
+
+        print(f"{car_number}. {car.get_name()}")
+        
+        car_number += 1
+
+    car_selection = int(input("Select Car Number to Be Returned: "))
+
+    if car_selection > 0 and car_selection <= len(cars_list):
+
+        print(f"You Selected {cars_list[car_selection - 1].get_name()}.")
+
+        returning_confirmation = input("Confirm Returning (Y) or (N): ")
+
+        if returning_confirmation.upper() == "Y":
+
+            cars_list[car_selection - 1].increase_available_quantity()
+
+            print("Car Returned.")
+
+        else:
+
+            print("Car Was Not Returned.")
+
+
 # Main Function
 def main():
 
@@ -180,6 +210,10 @@ def main():
         elif user_input == 2:
 
             car_rent(cars_list)
+
+        elif user_input == 3:
+
+            car_return(cars_list)
 
         user_input = menu_display()
 
