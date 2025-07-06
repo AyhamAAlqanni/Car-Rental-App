@@ -1,6 +1,8 @@
 
+# A class that represents a car in the rental system.
 class Car:
 
+    # Car attributes.
     def __init__(self, name, quantity_available, daily_rent_cost, liability_insurance_cost, comprehensive_insurance_cost):
 
         self.__name = name
@@ -9,6 +11,7 @@ class Car:
         self.__liability_insurance_cost = liability_insurance_cost
         self.__comprehensive_insurance_cost = comprehensive_insurance_cost
 
+    # Attributes getter and setter methods.
     def set_name(self, name):
 
         self.__name = name
@@ -49,14 +52,17 @@ class Car:
 
         return self.__comprehensive_insurance_cost
     
+    # A method that decreases car quantity.
     def decrease_available_quantity(self):
 
         self.__quantity_available -= 1
 
+    # A method that increases car quantity.
     def increase_available_quantity(self):
 
         self.__quantity_available += 1
     
+    # A method that returns car attributes states.
     def __str__(self):
 
         return (f"Car Name: {self.__name}\nAvailable Quantity: {self.__quantity_available}\n"
