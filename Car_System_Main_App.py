@@ -69,7 +69,7 @@ def file_read():
 # A function that displays the menu.
 def menu_display():
 
-    # only 1, 2, 3, 4, 5 and 0 are accepted. If the users enters anything else, 
+    # only 1, 2, 3, 4, 5, 6 and 0 are accepted. If the users enters anything else, 
     # the system keeps asking the user to enter a valid option
     try:
 
@@ -79,6 +79,7 @@ def menu_display():
         print("\t3- Car Return.")
         print("\t4- Print The Total.")
         print("\t5- Delete Car.")
+        print("\t6- Modify Car.")
         print("\t0- Exit Program.")
 
         user_input = int(input("Option Number: "))
@@ -303,6 +304,96 @@ def car_delete(cars_list):
         print("RESULT: Wrong Input!\nEntered a Non Integer Value.")
 
 
+# A function that deals with modifing a car.
+def car_modify(cars_list):
+
+    print("Select One of The Available Cars:")
+    print("-------------------------------------------------------------------------------------------------------")
+    print(f"{"Model":<20}{"Available":<15}{"Price/Day":<15}{"Liability Insurance/Day":<25}{"Comprehensive Insurance/Day"}")
+    print("-------------------------------------------------------------------------------------------------------")
+
+    # A variable that holds car listing number for the car list menu.
+    car_number = 1
+
+    # Displaying cars information.
+    for car in cars_list:
+
+        print(f"{car_number}. {car.get_name():<20}{car.get_quantity_available():<14}{"$" + str(car.get_daily_rent_cost()):<20}" + 
+              f"{"$" + str(car.get_liability_insurance_cost()):<27}{"$" + str(car.get_comprehensive_insurance_cost())}")
+        
+        car_number += 1
+
+    try:
+
+        car_selection = int(input("Select Car Number to Be Modified: "))
+
+        if car_selection > 0 and car_selection <= len(cars_list):
+
+            try:
+
+                print("(1) Modify Available Quantity.")
+                print("(2) Modify Daily Rent Cost.")
+                print("(3) Modify Liability Insurance Cost.")
+                print("(4) Modify Comprehensive Insurance Cost.")
+
+                modify_selection = int(input("Select Option: "))
+
+                if modify_selection > 0 and modify_selection < 5:
+
+                    if modify_selection == 1:
+
+                        modified_available_quantity = int(input("Enter New Available Quantity: "))
+
+                        cars_list[car_selection - 1].set_quantity_available(modified_available_quantity)
+
+                        print("Car Available Quantity Modified.")
+                        print("RESULT: Car Has Been Modified.")
+
+                    elif modify_selection == 2:
+
+                        modified_daily_rent_cost = float(input("Enter New Daily Rent Cost: "))
+
+                        cars_list[car_selection - 1].set_daily_rent_cost(modified_daily_rent_cost)
+
+                        print("Car Daily Rent Cost Modified.")
+                        print("RESULT: Car Has Been Modified.")
+
+                    elif modify_selection == 3:
+
+                        modified_liability_insurance_cost = float(input("Enter New Liability Insurance Cost: "))
+
+                        cars_list[car_selection - 1].set_liability_insurance_cost(modified_liability_insurance_cost)
+
+                        print("Car Liability Insurance Cost Modified.")
+                        print("RESULT: Car Has Been Modified.")
+
+                    elif modify_selection == 4:
+
+                        modified_comprehensive_insurance_cost = float(input("Enter New Comprehensive Insurance Cost: "))
+
+                        cars_list[car_selection - 1].set_comprehensive_insurance_cost(modified_comprehensive_insurance_cost)
+
+                        print("Car Comprehensive Insurance Cost Modified.")
+                        print("RESULT: Car Has Been Modified.")
+
+                else:
+
+                    print("RESULT: Invalid Selection!\nEntered a Value Not in The List.")
+
+                    print("RESULT: Car Has Not Been Modified!")
+
+            except ValueError:
+
+                print("RESULT: Wrong Input!\nEntered a Non Integer Value.")
+
+        else:
+                print("RESULT: Invalid Selection!\nEntered a Value Not in The List.")
+
+    except ValueError:
+
+        print("RESULT: Wrong Input!\nEntered a Non Integer Value.")
+
+
 # Main Function
 def main():
 
@@ -321,9 +412,9 @@ def main():
 
     while user_input != 0:
 
-        # only 1, 2, 3, 4, 5 and 0 are accepted. If the users enters anything else, 
+        # only 1, 2, 3, 4, 5, 6 and 0 are accepted. If the users enters anything else, 
         # the system keeps asking the user to enter a valid option.
-        if user_input < 0 or user_input > 5:
+        if user_input < 0 or user_input > 6:
 
             print("RESULT: Invalid Option!")
             print("***************************************************************")
@@ -371,6 +462,13 @@ def main():
             print("OPTION 5: Deleting Car")
 
             car_delete(cars_list)
+
+        elif user_input == 6:
+
+            print("***************************************************************")
+            print("OPTION 6: Modifing Car")
+
+            car_modify(cars_list)
 
         # Getting user option input.
         # Keep asking the user for input until user inputs 0 (to exit).
